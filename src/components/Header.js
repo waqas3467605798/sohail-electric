@@ -31,15 +31,15 @@ import {Link} from 'react-router-dom'
     <div>
     
       <div id='div1'> 
-      Lab Test Report System
+      Sohail Electronics
       </div>
 
       <div id='div2'>
      
-     <Link to='/' style={{textDecoration:'none', marginRight:'22px'}} > <b>Define</b> </Link>
-     <Link to='/DataEntry' style={{textDecoration:'none', marginRight:'22px'}} > <b>Data Entry</b> </Link>
-     <Link to='/GetReport' style={{textDecoration:'none', marginRight:'22px'}} > <b>Get Report</b> </Link>
      
+     <Link to='/DataEntry' style={{textDecoration:'none', marginRight:'22px'}} > <b>Bill Entry</b> </Link>
+     <Link to='/GetReport' style={{textDecoration:'none', marginRight:'22px'}} > <b>Get Bill</b> </Link>
+     <Link to='/' style={{textDecoration:'none', marginRight:'22px'}} > <b>Admin</b> </Link>
      
       </div>
       

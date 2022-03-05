@@ -5,15 +5,15 @@ import 'firebase/storage'
 
 
 
-var firebaseConfig = {
-  apiKey: "AIzaSyCid-mqkVxXOWWGvwJg0bHWoHKaD_0hvbo",
-  authDomain: "publiclabreports.firebaseapp.com",
-  projectId: "publiclabreports",
-  storageBucket: "publiclabreports.appspot.com",
-  messagingSenderId: "609586197933",
-  appId: "1:609586197933:web:de5d4291a4fba64e61dd24",
-  measurementId: "G-JKE1TWLBVJ"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyAdKUeFJLeL5XucfpcHErO0j6Jw0PGH_sQ",
+  authDomain: "sohail-electric.firebaseapp.com",
+  projectId: "sohail-electric",
+  storageBucket: "sohail-electric.appspot.com",
+  messagingSenderId: "106332622374",
+  appId: "1:106332622374:web:a30efebd71659131d0a0e7",
+  measurementId: "G-N0E6ZPE8Z6"
+};
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 //   firebase.analytics();
