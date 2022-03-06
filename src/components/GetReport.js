@@ -15,10 +15,12 @@ import {useReactToPrint} from 'react-to-print'
       this.state ={
               user:null,
               userEmail:null,
-              customerReports:[],
+              billsArray:[],
+              displayBillObj:{itemArray:[], grandTotal:[]},
+
               loadCustomerList:false,
               showReport:false,
-              displayReportObject:{patientReport:[]},
+              
               noRecordFound:''
       }
 
@@ -33,7 +35,7 @@ import {useReactToPrint} from 'react-to-print'
 
       var list = []
 
-    firebase.database().ref('customerReports').on('child_added' , (data)=> { 
+    firebase.database().ref('bills').on('child_added' , (data)=> { 
       list.push(data.val())
     }  )
 
@@ -41,9 +43,9 @@ import {useReactToPrint} from 'react-to-print'
     res(list)
     rej('Some thing went wrong')
   } )
-  dataPushPromise.then((customerObj)=>{
+  dataPushPromise.then((billsObj)=>{
   
-    this.setState({customerReports:customerObj, loadCustomerList:true})
+    this.setState({billsArray:billsObj})
   
   
   }
@@ -60,14 +62,14 @@ import {useReactToPrint} from 'react-to-print'
   // }
 
   
-  getReport=()=>{
+  getBill=()=>{
 
 
 
 this.setState({showReport:true})
-    var reportNo = document.getElementById('repNo').value
+    var billNumber = document.getElementById('billNumber').value
     var reqObjPromise = new Promise( (res,rej)=>{
-      var ourObj = this.state.customerReports.find((obj)=>{return obj.reportNumber === Number(reportNo)})
+      var ourObj = this.state.billsArray.find((obj)=>{return obj.billNumber === Number(billNumber)})
     
     res(ourObj)
     } )
@@ -77,12 +79,12 @@ this.setState({showReport:true})
 
 if(reqObj){
 
-      this.setState({displayReportObject:reqObj})
+      this.setState({displayBillObj:reqObj})
       // console.log(reqObj)
 
 }else{
   // alert('Report Not Found')
-  this.setState({displayReportObject:{patientReport:[]}, showReport:false, noRecordFound:'No Record Found'})
+  this.setState({displayBillObj:{itemArray:[], grandTotal:[]}, showReport:false, noRecordFound:'No Record Found'})
 }
 
 
@@ -106,34 +108,26 @@ if(reqObj){
           {/* Div of to getting Customer Report */}
           <div className='container'>
           <span style={{fontSize:'14px',color:'blue'}}>Enter Report Number</span><br/>
-          <input type='Number' id='repNo' placeholder='Enter Report Number Here'/> <br/>
-          <button style={{padding:'3px',fontSize:'14px',borderRadius:'4px', color:'blue', backgroundColor:'lightgreen'}} onClick={this.getReport}>Get Report</button>  
+          <input type='Number' id='billNumber' placeholder='Enter Bill Number Here'/> <br/>
+          <button style={{padding:'3px',fontSize:'14px',borderRadius:'4px', color:'blue', backgroundColor:'lightgreen'}} onClick={this.getBill}>Get Bill</button>  
           
 <br/><br/>
           {/* report display div */}
           <div className={this.state.showReport===false?'display':''} style={{border:'1px solid red', padding:'15px', borderRadius:'10px'}}>
-            <div style={{textAlign:'center', color:'blue'}}><span style={{color:'blue', fontSize:'30px'}}><b>ABC Lab Pvt Ltd</b></span><br/><span>ST No.06, Main Bazar, Mansoorabad, Faisalabad</span><br/><span>Contact: 0300-xxxxxxx36</span></div>
-            <p style={{textAlign:'right'}}>Report No: {this.state.displayReportObject.reportNumber}<br/>
-            Date:{this.state.displayReportObject.date}</p>
-            <p style={{color:'brown', backgroundColor:'lightblue', textAlign:'center'}}><b>Customer Information</b></p>
-            <table>
-              <tbody>
-                {/* <tr className={this.state.displayReportObject.date?'':'display'}><td>Date:</td><td>{this.state.displayReportObject.date}</td></tr> */}
-                <tr className={this.state.displayReportObject.patientName?'':'display'}><td>Customer Name:</td><td>{this.state.displayReportObject.patientName}</td></tr>
-                <tr className={this.state.displayReportObject.age?'':'display'}><td>Age:</td><td>{this.state.displayReportObject.age}</td></tr>
-                <tr className={this.state.displayReportObject.cnic?'':'display'}><td>CNIC:</td><td>{this.state.displayReportObject.cnic}</td></tr>
-                <tr className={this.state.displayReportObject.contact?'':'display'}><td>Contact:</td><td>{this.state.displayReportObject.contact}</td></tr>
-              </tbody>
-            </table>
-              <br/>
-            <p style={{color:'brown', backgroundColor:'lightblue', textAlign:'center'}}><b>Test Report</b></p>
-            {this.state.displayReportObject.patientReport.map((item,index)=>{return <div key={index}><b style={{color:'blue',fontSize:'17px'}}>{item.testName}</b><table><thead><tr><th>Test Name</th><th>Result</th><th>Normal Range</th></tr></thead><tbody>{item.subTests.map((it,ind)=>{return <tr key={ind} className={it.result ? '' : 'display'}><td>{it.subTestName}</td><td>{it.result}</td><td>{it.range}</td></tr>})}</tbody></table></div>})} 
-            
+          <p id='billHeader'>
+         <span className='billSpan' id='billToSpan'>Bill To; <br/><b>{this.state.displayBillObj.billTo}</b></span> <span className='billSpan' id='billSpan'>Invoice # <br/> Date:</span> <span className='billSpan' id='billNumbSpan'>{this.state.displayBillObj.billNumber} <br/> {this.state.displayBillObj.date}</span> <br/>
+         </p>
+          {this.state.displayBillObj.itemArray.map((item,ind)=>{return <p key={ind}><span>{ind+1}- </span><span className='billSpan' id='itemSpan'> {item.itemName}</span><span className='billSpan' id='qtySpan'>{item.qty}</span><span className='billSpan' id='rateSpan'>{item.rate}</span><span className='billSpan' id='totalAmountSpan'><b>{item.totalAmount}</b></span><hr/></p>})}
+
+          <p>Total Bill Amount: <b>Rs. {this.state.displayBillObj.grandTotal.reduce( (total,num)=>{return total+num},0)}</b></p>
+
+
+
+
           </div>
           <span className={this.state.showReport===false?'display':''} style={{fontSize:'10px'}}>
             Note:<br/>
-            1-This is computer generated report, no need any signature.<br/>
-            2-This report cannot be chellange in any court.
+            1-This is computer generated Bill, no need any signature.<br/>
             </span>
           
 

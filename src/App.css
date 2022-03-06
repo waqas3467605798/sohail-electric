@@ -146,3 +146,43 @@ button{
     font-size:12px;
 }
 
+
+
+
+#billHeader{
+    background-color:lightgray;
+    /* width:80%; */
+    
+}
+.billSpan{
+    display: inline-block;
+    /* border: 1px solid black; */
+    
+    
+}
+
+#billToSpan{
+width:35%;
+}
+
+#billSpan{
+    width:20%;
+}
+
+#billNumbSpan{
+    width:15%;
+}
+
+#itemSpan{
+    width: 40%;
+}
+
+#qtySpan{
+    width: 15%;
+}
+#rateSpan{
+    width: 15%;
+}
+#totalAmountSpan{
+    width: 20%;
+}

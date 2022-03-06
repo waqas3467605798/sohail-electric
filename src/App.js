@@ -50,9 +50,9 @@ async componentDidMount(){
     {/* <Route path='/CustomerAccess' component={CustomerAccess}/> */}
       <Header/>
       
-      <Route exact path='/' component={Define}/>
-      <Route path='/DataEntry' component={DataEntry}/>
+      <Route exact path='/' component={DataEntry}/>
       <Route path='/GetReport' component={GetReport}/>
+      <Route path='/Define' component={Define}/>
       
 
 
