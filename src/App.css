@@ -139,6 +139,10 @@ button{
     cursor: pointer;
 }
 
+#billNumber{
+    width: 10% !important;
+}
+
 
 #tableView{
     width:50%;
@@ -148,11 +152,19 @@ button{
 
 
 
+#billTopHeading{
+    /* background-color: gray; */
+    margin: 0%;
+    text-align: center;
+    color: brown;  
+}
+
 
 #billHeader{
     background-color:lightgray;
-    /* width:80%; */
-    
+    width:100%;
+    padding:7px;
+    margin: 0%;
 }
 .billSpan{
     display: inline-block;
@@ -166,11 +178,12 @@ width:35%;
 }
 
 #billSpan{
-    width:20%;
+    width:30%;
+    text-align: right;
 }
 
 #billNumbSpan{
-    width:15%;
+    width:25%;
 }
 
 #itemSpan{
