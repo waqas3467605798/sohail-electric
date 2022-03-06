@@ -204,7 +204,7 @@ showLogin = ()=>{
               {/* <label forhtml="first_name">First Name</label> */}
                </div>
  
-               <button style={{padding:'10px',fontSize:'18px',borderRadius:'7px', color:'blue', backgroundColor:this.state.login===false?'lightgreen' : 'lightyellow' }} onClick={this.signin}> {this.state.login===false? 'Login' : 'Loging.....'} </button>
+               <button style={{padding:'10px',fontSize:'18px',borderRadius:'7px', color:'blue', backgroundColor:this.state.login===false?'lightgreen' : 'lightyellow' }} onClick={this.signin}> {this.state.login===false? 'Login' : 'Signing In...'} </button>
 
                 <a href='#' onClick={this.showForgetField}>Forget Password ?</a>
 

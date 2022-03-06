@@ -95,8 +95,23 @@ input:focus{
 }
 
 input{
-    height: 19px !important;
-    width: 65% !important;
+    height: 23px !important;
+    width: 46% !important;
+}
+
+#item_input{
+    height: 23px;
+    width: 20% !important;
+}
+
+#qty_input{
+    height: 23px;
+    width: 10% !important;
+}
+
+#rate_input{
+    height: 23px;
+    width: 10% !important;
 }
 
 #repNo{
@@ -123,3 +138,11 @@ input{
 button{
     cursor: pointer;
 }
+
+
+#tableView{
+    width:50%;
+    color:gray;
+    font-size:12px;
+}
+
