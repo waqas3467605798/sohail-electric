@@ -64,20 +64,6 @@ export default Login;
 
 
 
-class Headers extends Component{
-
-    render(){
-        return(
-            <div>
-                
-
-                   
-            </div>
-        )
-    }
-}
-
-
 
 
 
@@ -187,7 +173,7 @@ showLogin = ()=>{
 
 
 
-
+<br/><br/><br/>
 <span className='navLinks_loginPage' onClick={this.showLogin}>User-Login</span>
 
                 {/* The Div of User Login is Here */}
@@ -231,7 +217,7 @@ Mian Sohail Electric Works
 
 
 
-
+<br/><br/><br/><br/><br/><br/><br/><br/>
 
               <div className='bottomLine'> 
         Developed By: Waqas Saleem Contact: 0346-7605798 Email: waqas.mba86@gmail.com
