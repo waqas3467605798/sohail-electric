@@ -19,7 +19,10 @@ import {Link, Route, BrowserRouter} from 'react-router-dom'
               qty:'',
               rate:'',
               itemObject:[],
-              grandTotalObject:[]
+              grandTotalObject:[],
+              entrySaved:'',
+              color:'',
+              itemTableView:false
 
               
 
@@ -80,6 +83,8 @@ changeHandler=(e)=>{
 
 
 addItem=()=>{
+this.setState({itemTableView:true})
+
 var itemObj = {}
 itemObj.itemName = this.state.itemName;
 itemObj.qty = this.state.qty;
@@ -118,17 +123,35 @@ billObj.billNumber = billNumber;
  firebase.database().ref('bills').child(key).set(billObj)
 
 
-// var testReportNumber = this.state.reportNumber + 1
 
-// reportObj.reportNumber = testReportNumber
-
-// firebase.database().ref('reportNumber').child('reportNumber').set(testReportNumber)
-// console.log(reportObj)
-alert('Bill Successfully Generated')
+this.setState({entrySaved: 'Entry Saved'})
 
 
 this.setState({date:'', billTo:'', itemObject:[], grandTotalObject:[]})
 firebase.database().ref('billNumber').child('billNumber').set(billNumber)
+
+this.setState({itemTableView:false})
+
+
+
+setTimeout(() => {
+  this.setState({color:'gray'})
+
+
+
+setTimeout(()=>{
+  this.setState({color:'lightgray'})
+
+setTimeout(()=>{
+  this.setState({entrySaved:'',color:''})
+},1000)
+
+},1000)
+
+
+}, 1000);
+
+
 }
 
 
@@ -153,12 +176,15 @@ firebase.database().ref('billNumber').child('billNumber').set(billNumber)
           <input id='item_input' name='itemName' value={this.state.itemName} onChange={this.changeHandler} className='browser-default listedInput' type='text' placeholder='Item Name'/> 
           <input id='qty_input' name='qty' value={this.state.qty} onChange={this.changeHandler} className='browser-default listedInput' type='Number' placeholder='Qty'/> 
           <input id='rate_input' name='rate' value={this.state.rate} onChange={this.changeHandler} className='browser-default listedInput' type='Number' placeholder='Rate'/> 
-          <button onClick={this.addItem}>Add</button> <br/> <br/>
+          <button onClick={this.addItem} style={{backgroundColor:'pink', borderRadius:'8px', padding:'3px'}}>Add</button> <br/> <br/>
           <button style={{padding:'3px',fontSize:'14px',borderRadius:'4px', color:'blue', backgroundColor:'lightgreen'}} onClick={this.generateBill}> Generate Bill </button> <br/>
-
+          <span style={{fontSize:'20px', color:this.state.color}}><b>{this.state.entrySaved}</b></span>
 <br/><br/>
+          <div className={this.state.itemTableView===false?'display' : ''}>
           <table id='tableView'><thead><tr><th>Item</th><th>Qty</th><th>Rate</th><th>Total</th></tr></thead><tbody>{this.state.itemObject.map((item,ind)=>{return <tr key={ind}><td>{item.itemName}</td><td>{item.qty}</td><td>{item.rate}</td><td>{item.totalAmount}</td></tr> })}</tbody></table>
           <span style={{fontSize:'12px'}}>Total Bill Amount: <b style={{color:'blue'}}>Rs. {this.state.grandTotalObject.reduce( (total,num)=>{return total+num},0)}</b> </span>
+          </div>
+          
           </div>
 
 

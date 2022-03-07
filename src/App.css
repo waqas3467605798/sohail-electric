@@ -101,17 +101,17 @@ input{
 
 #item_input{
     height: 23px;
-    width: 20% !important;
+    width: 30% !important;
 }
 
 #qty_input{
     height: 23px;
-    width: 10% !important;
+    width: 20% !important;
 }
 
 #rate_input{
     height: 23px;
-    width: 10% !important;
+    width: 20% !important;
 }
 
 #repNo{
@@ -145,7 +145,7 @@ button{
 
 
 #tableView{
-    width:50%;
+    width:75%;
     color:gray;
     font-size:12px;
 }

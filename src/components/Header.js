@@ -31,7 +31,7 @@ import {Link} from 'react-router-dom'
     <div>
     
       <div id='div1'> 
-      Sohail Electronics
+      M Sohail Electric Works
       </div>
 
       <div id='div2'>

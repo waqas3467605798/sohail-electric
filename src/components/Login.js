@@ -181,7 +181,7 @@ showLogin = ()=>{
              <div>
  
  <div id='div1'> 
-                 Sohail Electronics
+                 M Sohail Electric Works
  </div>
 
 
@@ -220,6 +220,16 @@ showLogin = ()=>{
               {/* </div> */}
               </div>
               
+
+
+{/* <div className='container' style={{textAlign:'center'}}>
+<p style={{border:'1px solid', width:'70%',margin:'auto', borderRadius:'100%', fontSize:'30px'}}>
+Mian Sohail Electric Works
+</p>
+</div> */}
+
+
+
 
 
 

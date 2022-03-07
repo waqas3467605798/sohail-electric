@@ -24,7 +24,8 @@ import {useReactToPrint} from 'react-to-print'
               address:'',
               contact:'',
               email:'',
-              noRecordFound:''
+              noRecordFound:'',
+              pageRefresh:0
       }
 
   }
@@ -59,6 +60,25 @@ import {useReactToPrint} from 'react-to-print'
   }
   )
   
+
+  setTimeout(() => {
+  
+
+    const inteId = setInterval(()=>{
+      this.setState({pageRefresh: this.state.pageRefresh+1})
+    },1000)
+    
+    
+    setTimeout(() => {
+      clearInterval(inteId);
+    }, 30000);
+  
+  
+  
+  }, 1000);
+
+
+
   }
 
   // refreshList=()=>{
@@ -102,6 +122,7 @@ if(reqObj){
 
         return(
           <div>
+            {/* {this.state.pageRefresh} */}
           <div className={navigator.onLine===true ? '' : 'display'}>
 
 
@@ -120,14 +141,14 @@ if(reqObj){
           {/* Bill display div */}
           <div className={this.state.showReport===false?'display':''} style={{border:'1px solid black', padding:'15px', borderRadius:'10px'}}>
          
-         <p id='billTopHeading'><span style={{fontSize:'26px'}}><b>M Sohail Electric</b></span><br/><span>Mansoorabad, Faisalabad Ph:0034600000</span></p>
+         <p id='billTopHeading'><span style={{fontSize:'22px'}}><b>M Sohail Electric Works</b></span><br/><span>Contact Number: 0300-7641826</span></p>
           <p id='billHeader'>
-         <span className='billSpan' id='billToSpan'>Bill To; <br/><b>{this.state.displayBillObj.billTo}</b></span> <span className='billSpan' id='billSpan'>Invoice # <br/> Date:</span> <span className='billSpan' id='billNumbSpan' style={{textAlign:'right'}}><b>{this.state.displayBillObj.billNumber}</b> <br/> {this.state.displayBillObj.date}</span> <br/>
+         <span className='billSpan' id='billToSpan'>Bill To; <br/>{this.state.displayBillObj.billTo}</span> <span className='billSpan' id='billSpan'>Invoice # <br/> Date:</span> <span className='billSpan' id='billNumbSpan' style={{textAlign:'right'}}><b>{this.state.displayBillObj.billNumber}</b> <br/> {this.state.displayBillObj.date}</span> <br/>
          </p> <br/><br/>
           <span className='billSpan' style={{width:'42.5%', paddingLeft:'25px'}}><b>Item</b></span><span className='billSpan' style={{width:'15%', textAlign:'center'}}><b>Qty</b></span><span className='billSpan' style={{width:'15%', textAlign:'center'}}><b>Rate</b></span><span className='billSpan' style={{width:'20%', textAlign:'right'}}><b>Rs.</b></span><hr/>
           {this.state.displayBillObj.itemArray.map((item,ind)=>{return <p key={ind}><span>{ind+1}- </span><span className='billSpan' id='itemSpan'> {item.itemName}</span><span className='billSpan' id='qtySpan' style={{textAlign:'center'}}>{item.qty}</span><span className='billSpan' id='rateSpan' style={{textAlign:'center'}}>{item.rate}</span><span className='billSpan' id='totalAmountSpan' style={{textAlign:'right'}}><b>{item.totalAmount}</b></span><hr/></p>})}
 
-          <p style={{color:'blue', textAlign:'right',paddingRight:'30px'}}>Total Bill Amount: <b style={{border:'1px solid', padding:'5px'}}>Rs. {this.state.displayBillObj.grandTotal.reduce( (total,num)=>{return total+num},0)}</b></p>
+          <p style={{color:'blue', textAlign:'right',paddingRight:'30px'}}> <b style={{border:'1px solid black', padding:'5px', backgroundColor:'lightgray'}}> Total Bill Amount: Rs. {this.state.displayBillObj.grandTotal.reduce( (total,num)=>{return total+num},0)}</b></p>
 
 
 
@@ -181,6 +202,7 @@ if(reqObj){
               user:null,
               userEmail:null,
               billsArray:[],
+              pageRefresh:0
               // loadCustomerList:false,
               // refreshList:false,
               // displayReportObject:{patientReport:[]}
@@ -226,31 +248,42 @@ if(reqObj){
   }
   )
   
+
+
+
+  setTimeout(() => {
+  
+
+    const inteId = setInterval(()=>{
+      this.setState({pageRefresh: this.state.pageRefresh+1})
+    },1000)
+    
+    
+    setTimeout(() => {
+      clearInterval(inteId);
+    }, 30000);
+  
+  
+  
+  }, 1000);
+
+
+
+
+
   }
 
-  refreshList=()=>{
-    this.setState({refreshList: !this.state.refreshList})
-  }
 
-  
-  // getReport=()=>{
-  //   var reportNo = document.getElementById('repNo').value
-  
-  //   var reqObjPromise = new Promise( (res,rej)=>{
-  //     var ourObj = this.state.customerReports.find((obj)=>{return obj.reportNumber === Number(reportNo)})
-    
-  //   res(ourObj)
-  //   } )
 
-    
-  //   reqObjPromise.then((reqObj)=>{
 
-  //     this.setState({displayReportObject:reqObj})
-  //     // console.log(reqObj)
-  //   })
 
-    
+
+  // refreshList=()=>{
+  //   this.setState({refreshList: !this.state.refreshList})
   // }
+
+  
+  
 
   deleteBill = (keyToDelete)=>{
 var confirmation = prompt("Enter 'Y' to confirm ")
@@ -273,12 +306,13 @@ else{
           <div>
        
 <br/><br/><br/>
-
+{/* {this.state.pageRefresh} */}
           {/* Div of List of all customer Reports */}
           <div className={this.state.loadCustomerList===false?'display' : 'container'}>
-          <button style={{padding:'3px',fontSize:'14px',borderRadius:'4px', color:'blue', backgroundColor:'lightgreen'}} onClick={this.refreshList}>Show List</button>  <span style={{color:'red'}}>Last 500-Bills Detail</span>
+          {/* <button style={{padding:'3px',fontSize:'14px',borderRadius:'4px', color:'blue', backgroundColor:'lightgreen'}} onClick={this.refreshList}>Show List</button>  <span style={{color:'red'}}>Last 500-Bills Detail</span> */}
         {/* <table className='browser-default'><thead><tr style={{backgroundColor:'lightyellow'}}><th>R#</th><th>Date</th><th>Name</th><th>Age</th><th>Contact</th></tr></thead><tbody>{this.state.customerReports.sort((a, b) => (a.reportNumber < b.reportNumber) ? 1 : -1).map((it,ind)=>{return <tr key={ind}><td>{it.reportNumber}</td><td>{it.date}</td><td>{it.patientName}</td><td>{it.age}</td><td>{it.patientReport.map((item,index)=>{return <span key={index}>{item.testNam} , </span>})}</td></tr>}).slice(0,500)}</tbody></table> */}
         {/* <table className='browser-default'><thead><tr style={{backgroundColor:'lightyellow'}}><th>R#</th><th>Date</th><th>Name</th><th>Age</th><th>Contact</th></tr></thead><tbody>{this.state.customerReports.sort((a, b) => (a.reportNumber < b.reportNumber) ? 1 : -1).map((it,ind)=>{return <tr key={ind}><td>{it.reportNumber}</td><td>{it.date}</td><td>{it.patientName}</td><td>{it.age}</td><td>{it.contact}</td><td><a href='#' className="material-icons" style={{color:'red',fontSize:'15px'}} onClick={()=> this.deleteReport(it.key)}>delete</a></td></tr>}).slice(0,500)}</tbody></table> */}
+        <span style={{color:'red'}}>Last 500-Bills Detail</span>
         <table className='browser-default'><thead><tr style={{backgroundColor:'lightyellow'}}><th>Bill#</th><th>Date</th><th>Customer</th><th>Amount</th><th>Delete</th></tr></thead><tbody>{this.state.billsArray.reverse().map((it,ind)=>{return <tr key={ind}><td>{it.billNumber}</td><td>{it.date}</td><td>{it.billTo}</td><td>{it.grandTotal.reduce( (total,num)=>{return total+num},0)}</td><td><a href='#' className="material-icons" style={{color:'red',fontSize:'15px'}} onClick={()=> this.deleteBill(it.key)}>delete</a></td></tr>}).slice(0,500)}</tbody></table>
         </div>
 
@@ -305,8 +339,9 @@ const handlePrint = useReactToPrint({
   return(
     <div>
     <GetReportCompo ref={componentRef}/>
+    <br/><br/><br/>
     <div  className='container'><button style={{padding:'5px',fontSize:'14px',borderRadius:'4px', color:'black', backgroundColor:'lightgreen'}} onClick={handlePrint}>Print Bill</button></div>
-    <br/><br/><br/><br/>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
     <CustomerList />
 
 
