@@ -104,6 +104,12 @@ console.log(this.state.itemObject)
 
 generateBill = ()=>{
 
+  if(this.state.itemObject.length===0){
+    alert('One item should must be added')
+  }else{
+
+
+
 var billObj = {};
  billObj.date = this.state.date;
  billObj.billTo= this.state.billTo;
@@ -153,6 +159,7 @@ setTimeout(()=>{
 
 
 }
+}
 
 
 
@@ -177,13 +184,19 @@ setTimeout(()=>{
           <input id='qty_input' name='qty' value={this.state.qty} onChange={this.changeHandler} className='browser-default listedInput' type='Number' placeholder='Qty'/> 
           <input id='rate_input' name='rate' value={this.state.rate} onChange={this.changeHandler} className='browser-default listedInput' type='Number' placeholder='Rate'/> 
           <button onClick={this.addItem} style={{backgroundColor:'pink', borderRadius:'8px', padding:'3px'}}>Add</button> <br/> <br/>
-          <button style={{padding:'3px',fontSize:'14px',borderRadius:'4px', color:'blue', backgroundColor:'lightgreen'}} onClick={this.generateBill}> Generate Bill </button> <br/>
-          <span style={{fontSize:'20px', color:this.state.color}}><b>{this.state.entrySaved}</b></span>
-<br/><br/>
+          
+          
           <div className={this.state.itemTableView===false?'display' : ''}>
           <table id='tableView'><thead><tr><th>Item</th><th>Qty</th><th>Rate</th><th>Total</th></tr></thead><tbody>{this.state.itemObject.map((item,ind)=>{return <tr key={ind}><td>{item.itemName}</td><td>{item.qty}</td><td>{item.rate}</td><td>{item.totalAmount}</td></tr> })}</tbody></table>
           <span style={{fontSize:'12px'}}>Total Bill Amount: <b style={{color:'blue'}}>Rs. {this.state.grandTotalObject.reduce( (total,num)=>{return total+num},0)}</b> </span>
           </div>
+          
+          
+          <br/><br/>
+          <button style={{padding:'3px',fontSize:'14px',borderRadius:'4px', color:'blue', backgroundColor:'lightgreen'}} onClick={this.generateBill}> Generate Bill </button> <br/>
+          <span style={{fontSize:'20px', color:this.state.color}}><b>{this.state.entrySaved}</b></span>
+<br/><br/>
+          
           
           </div>
 
