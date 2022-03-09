@@ -23,7 +23,9 @@ import {Link, Route, BrowserRouter} from 'react-router-dom'
               grandTotalObject:[],
               entrySaved:'',
               color:'',
-              itemTableView:false
+              itemTableView:false,
+              loadingFromFirebase:1,
+              netConnection:false
 
               
 
@@ -70,7 +72,30 @@ dataPushPromise.then((testObj)=>{
 }
 )
 
+
+
+setTimeout(()=>{
+  this.setState({loadingFromFirebase:0})
+
+setTimeout(()=>{
+  firebase.database().ref('loadingDefaultValue').on('child_added' , (data)=> {
+    this.setState({loadingFromFirebase:data.val()})
+  }  )
+},1000)
+
+
+},200)
+
+
+
+
+
+
 }
+
+
+
+
 
 
 
@@ -191,8 +216,8 @@ setTimeout(()=>{
         return(
           <div>
           <br/><br/>
-          
-          <div className='container'>
+          <div className={navigator.onLine===true ? '' : 'display'}>
+          <div className={this.state.loadingFromFirebase===0?'display':'container'}>
           <h5 style={{color:'blue'}}>Bill Data Entry</h5> <br/>
           <label style={{color:'black',fontSize:'16px'}}>Date: </label><input type='text' name='date' value={this.state.date} onChange={this.changeHandler} maxLength='11' placeholder='Date'/> <br/> 
           <label style={{color:'black',fontSize:'16px'}}>Customer: </label><input type='text' name='billTo' value={this.state.billTo} onChange={this.changeHandler} placeholder='Bill To'/> 
@@ -235,6 +260,23 @@ setTimeout(()=>{
 <br/><br/>
           
           
+          </div>
+          </div>
+
+
+
+
+<div className={this.state.loadingFromFirebase===0?'container':'display'}>
+  Loading
+</div>
+
+
+
+
+
+<div className={navigator.onLine===true ? 'display' : 'container'}>
+          <span style={{fontSize:'20px', color:'red'}}>Some thing went wrong.... <br/>
+          Please check your internet connection</span>
           </div>
 
 

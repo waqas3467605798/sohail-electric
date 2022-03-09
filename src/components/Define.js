@@ -10,10 +10,11 @@ import firebase from './Fire'
       this.state ={
         user:null,
         userEmail:null,
-        businessName:'',
-        address:'',
-        contact:'',
-        email:''
+        // businessName:'',
+        // address:'',
+        // contact:'',
+        // email:'',
+        loadingDefaultValue:''
       }
 
   }
@@ -62,6 +63,11 @@ import firebase from './Fire'
 
 
 
+saveLoadingDefaultValue=()=>{
+firebase.database().ref('loadingDefaultValue').set({defaultValue:this.state.loadingDefaultValue})
+}
+
+
 
 
     render(){
@@ -84,6 +90,11 @@ import firebase from './Fire'
 <button style={{padding:'3px',fontSize:'14px',borderRadius:'4px', color:'blue', backgroundColor:'lightgreen'}} onClick={this.saveContact}> Save </button> <br/>
 <input type='text' name='email' value={this.state.email} onChange={this.changeHandler} placeholder='Email'/> <br/> 
 <button style={{padding:'3px',fontSize:'14px',borderRadius:'4px', color:'blue', backgroundColor:'lightgreen'}} onClick={this.saveEmail}> Save </button> <br/> */}
+
+
+<span>Loading Default Value</span><br/>
+<input type='Number' name='loadingDefaultValue' value={this.state.loadingDefaultValue} placeholder='Loading default value' onChange={this.changeHandler}/>
+<button onClick={this.saveLoadingDefaultValue}>Save</button>
 
 </div>
 </div>

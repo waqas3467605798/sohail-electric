@@ -150,11 +150,11 @@ if(reqObj){
          
          <p id='billTopHeading'><span style={{fontSize:'22px'}}><b>M Sohail Electric Works</b></span><br/><span>Contact Number: 0300-7641826</span></p>
           <p id='billHeader'>
-         <span className='billSpan' id='billToSpan'>Bill To; <br/>{this.state.displayBillObj.billTo}</span> <span className='billSpan' id='billSpan'>Invoice # <br/> Date:</span> <span className='billSpan' id='billNumbSpan' style={{textAlign:'right'}}><b>{this.state.displayBillObj.billNumber}</b> <br/> {this.state.displayBillObj.date}</span> <br/>
+         <span className='billSpan' id='billToSpan'>Customer Name; <br/>{this.state.displayBillObj.billTo}</span> <span className='billSpan' id='billSpan'>Invoice # <br/> Date:</span> <span className='billSpan' id='billNumbSpan' style={{textAlign:'right'}}><b>{this.state.displayBillObj.billNumber}</b> <br/> {this.state.displayBillObj.date}</span> <br/>
          </p> <br/><br/>
           <span className='billSpan' style={{width:'42.5%', paddingLeft:'25px'}}><b>Item</b></span><span className='billSpan' style={{width:'15%', textAlign:'center'}}><b>Qty</b></span><span className='billSpan' style={{width:'15%', textAlign:'center'}}><b>Rate</b></span><span className='billSpan' style={{width:'20%', textAlign:'right'}}><b>Rs.</b></span><hr/>
           {this.state.displayBillObj.itemArray.map((item,ind)=>{return <p id='billPara' key={ind}><span>{ind+1}- </span><span className='billSpan' id='itemSpan'> {item.itemName}</span><span className='billSpan' id='qtySpan' style={{textAlign:'center'}}>{item.qty}</span><span className='billSpan' id='rateSpan' style={{textAlign:'center'}}>{item.rate}</span><span className='billSpan' id='totalAmountSpan' style={{textAlign:'right'}}><b>{item.totalAmount}</b></span><hr/></p>})}
-          <br/><br/>
+          <br/>
           <p style={{color:'blue', textAlign:'right',paddingRight:'30px',margin:'0px'}}> <span style={{border:'1px solid black', padding:'5px', backgroundColor:'lightgray'}}><b> Total Bill Amount: Rs. {this.state.displayBillObj.grandTotal.reduce( (total,num)=>{return total+num},0)}</b></span></p> <br/>
           <p style={{color:'blue', textAlign:'right',paddingRight:'30px',margin:'0px'}}><span className={this.state.displayBillObj.advPayment===0? 'display':''}>Less: Advance Received: Rs. {this.state.displayBillObj.advPayment}</span></p>
           <p style={{color:'blue', textAlign:'right',paddingRight:'30px',margin:'0px'}}><span className={this.state.displayBillObj.advPayment===0? 'display':''}> <b>Balance Amount: Rs. {this.state.displayBillObj.grandTotal.reduce( (total,num)=>{return total+num},0) - this.state.displayBillObj.advPayment}</b></span></p>
@@ -324,17 +324,17 @@ else{
 <br/><br/><br/>
 {/* {this.state.pageRefresh} */}
           {/* Div of List of all customer Reports */}
-          <div className={this.state.loadCustomerList===false?'display' : 'container'}>
+          <div className='container'>
           {/* <button style={{padding:'3px',fontSize:'14px',borderRadius:'4px', color:'blue', backgroundColor:'lightgreen'}} onClick={this.refreshList}>Show List</button>  <span style={{color:'red'}}>Last 500-Bills Detail</span> */}
         {/* <table className='browser-default'><thead><tr style={{backgroundColor:'lightyellow'}}><th>R#</th><th>Date</th><th>Name</th><th>Age</th><th>Contact</th></tr></thead><tbody>{this.state.customerReports.sort((a, b) => (a.reportNumber < b.reportNumber) ? 1 : -1).map((it,ind)=>{return <tr key={ind}><td>{it.reportNumber}</td><td>{it.date}</td><td>{it.patientName}</td><td>{it.age}</td><td>{it.patientReport.map((item,index)=>{return <span key={index}>{item.testNam} , </span>})}</td></tr>}).slice(0,500)}</tbody></table> */}
         {/* <table className='browser-default'><thead><tr style={{backgroundColor:'lightyellow'}}><th>R#</th><th>Date</th><th>Name</th><th>Age</th><th>Contact</th></tr></thead><tbody>{this.state.customerReports.sort((a, b) => (a.reportNumber < b.reportNumber) ? 1 : -1).map((it,ind)=>{return <tr key={ind}><td>{it.reportNumber}</td><td>{it.date}</td><td>{it.patientName}</td><td>{it.age}</td><td>{it.contact}</td><td><a href='#' className="material-icons" style={{color:'red',fontSize:'15px'}} onClick={()=> this.deleteReport(it.key)}>delete</a></td></tr>}).slice(0,500)}</tbody></table> */}
         <span style={{color:'red'}}>Last 5000-Bills Detail</span>
-        <table className='browser-default'><thead><tr style={{backgroundColor:'lightyellow'}}><th>Bill#</th><th>Date</th><th>Customer</th><th>Amount</th><th>Status</th><th>Rcvd</th><th>Delete</th></tr></thead><tbody>{this.state.billsArray.sort((a, b) => (a.billNumber < b.billNumber) ? 1 : -1).map((it,ind)=>{return <tr key={ind}><td>{it.billNumber}</td><td>{it.date}</td><td>{it.billTo}</td><td>{it.grandTotal.reduce( (total,num)=>{return total+num},0)}</td><td className={it.saleStatus==='Cash'? 'CashStatus' : 'creditStatus'}>{it.saleStatus}</td><td><button className={it.creditRcvd===1?'creditButton':''} onClick={()=>{this.creditRcvd(ind)}}>{it.creditRcvd===0?'X':'OK'}</button></td><td><a href='#' className="material-icons" style={{color:'black',fontSize:'15px'}} onClick={()=> this.deleteBill(it.key)}>delete</a></td></tr>}).slice(0,5000)}</tbody></table>
+        <table className='browser-default'><thead><tr style={{backgroundColor:'lightyellow'}}><th>Bill#</th><th>Date</th><th>Customer</th><th>Amount</th><th>Status</th><th>Rcvd</th><th>Delete</th></tr></thead><tbody>{this.state.billsArray.sort((a, b) => (a.billNumber < b.billNumber) ? 1 : -1).map((it,ind)=>{return <tr key={ind}><td>{it.billNumber}</td><td>{it.date}</td><td>{it.billTo}</td><td>{it.grandTotal.reduce( (total,num)=>{return total+num},0)}</td><td className={it.saleStatus==='Cash'? 'CashStatus' : 'creditStatus'}>{it.saleStatus}</td><td><span className={it.saleStatus==='Cash'?'display':''}><button className={it.creditRcvd===1?'creditButton':''} onClick={()=>{this.creditRcvd(ind)}}>{it.creditRcvd===0?'X':'OK'}</button></span></td><td><a href='#' className="material-icons" style={{color:'black',fontSize:'15px'}} onClick={()=> this.deleteBill(it.key)}>delete</a></td></tr>}).slice(0,5000)}</tbody></table>
         </div>
 
-          <div className={this.state.loadCustomerList===false?'container' : 'display'}>
+          {/* <div className={this.state.loadCustomerList===false?'container' : 'display'}>
           <span style={{fontSize:'20px', color:'red'}}>loading ..... <br/> Please Wait</span>
-           </div>
+           </div> */}
 
           </div>
         )
