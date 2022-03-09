@@ -96,7 +96,7 @@ input:focus{
 
 input{
     height: 23px !important;
-    width: 46% !important;
+    width: 35% !important;
 }
 
 #item_input{
@@ -113,6 +113,12 @@ input{
     height: 23px;
     width: 20% !important;
 }
+
+#adv_input{
+    height: 23px;
+    width: 30% !important;
+}
+
 
 #repNo{
     width: 20% !important;
@@ -203,4 +209,18 @@ width:35%;
 #billPara{
     margin:0%;
     padding: 0px;
+}
+
+
+.creditStatus{
+    color:red;
+}
+
+.creditButton{
+    background-color: green;
+}
+
+label{
+    display: inline-block;
+    width: 110px;
 }

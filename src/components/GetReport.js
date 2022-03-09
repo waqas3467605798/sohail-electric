@@ -26,6 +26,7 @@ import {useReactToPrint} from 'react-to-print'
               email:'',
               noRecordFound:'',
               pageRefresh:0
+              // netConnection:false
       }
 
   }
@@ -79,6 +80,11 @@ import {useReactToPrint} from 'react-to-print'
 
 
 
+
+  
+
+
+
   }
 
   // refreshList=()=>{
@@ -123,6 +129,7 @@ if(reqObj){
         return(
           <div>
             {/* {this.state.pageRefresh} */}
+          {/* <div className={this.state.netConnection===true ? '' : 'display'}> */}
           <div className={navigator.onLine===true ? '' : 'display'}>
 
 
@@ -147,10 +154,10 @@ if(reqObj){
          </p> <br/><br/>
           <span className='billSpan' style={{width:'42.5%', paddingLeft:'25px'}}><b>Item</b></span><span className='billSpan' style={{width:'15%', textAlign:'center'}}><b>Qty</b></span><span className='billSpan' style={{width:'15%', textAlign:'center'}}><b>Rate</b></span><span className='billSpan' style={{width:'20%', textAlign:'right'}}><b>Rs.</b></span><hr/>
           {this.state.displayBillObj.itemArray.map((item,ind)=>{return <p id='billPara' key={ind}><span>{ind+1}- </span><span className='billSpan' id='itemSpan'> {item.itemName}</span><span className='billSpan' id='qtySpan' style={{textAlign:'center'}}>{item.qty}</span><span className='billSpan' id='rateSpan' style={{textAlign:'center'}}>{item.rate}</span><span className='billSpan' id='totalAmountSpan' style={{textAlign:'right'}}><b>{item.totalAmount}</b></span><hr/></p>})}
-
-          <p style={{color:'blue', textAlign:'right',paddingRight:'30px'}}> <b style={{border:'1px solid black', padding:'5px', backgroundColor:'lightgray'}}> Total Bill Amount: Rs. {this.state.displayBillObj.grandTotal.reduce( (total,num)=>{return total+num},0)}</b></p>
-
-
+          <br/><br/>
+          <p style={{color:'blue', textAlign:'right',paddingRight:'30px',margin:'0px'}}> <span style={{border:'1px solid black', padding:'5px', backgroundColor:'lightgray'}}><b> Total Bill Amount: Rs. {this.state.displayBillObj.grandTotal.reduce( (total,num)=>{return total+num},0)}</b></span></p> <br/>
+          <p style={{color:'blue', textAlign:'right',paddingRight:'30px',margin:'0px'}}><span className={this.state.displayBillObj.advPayment===0? 'display':''}>Less: Advance Received: Rs. {this.state.displayBillObj.advPayment}</span></p>
+          <p style={{color:'blue', textAlign:'right',paddingRight:'30px',margin:'0px'}}><span className={this.state.displayBillObj.advPayment===0? 'display':''}> <b>Balance Amount: Rs. {this.state.displayBillObj.grandTotal.reduce( (total,num)=>{return total+num},0) - this.state.displayBillObj.advPayment}</b></span></p>
 
 
           </div>
@@ -178,6 +185,7 @@ if(reqObj){
 
 
           {/* in case, internet is offline */}
+          {/* <div className={this.state.netConnection===true ? 'display' : 'container'}> */}
           <div className={navigator.onLine===true ? 'display' : 'container'}>
           <span style={{fontSize:'20px', color:'red'}}>Some thing went wrong.... <br/>
           Please check your internet connection</span>
@@ -274,6 +282,14 @@ if(reqObj){
   }
 
 
+  creditRcvd=(i)=>{
+  var reqObj = this.state.billsArray[i]
+  reqObj.creditRcvd= 1;
+  firebase.database().ref('bills').child(reqObj.key).set(reqObj)
+  this.state.billsArray.splice(i,1,reqObj)
+    
+  }
+
 
 
 
@@ -312,8 +328,8 @@ else{
           {/* <button style={{padding:'3px',fontSize:'14px',borderRadius:'4px', color:'blue', backgroundColor:'lightgreen'}} onClick={this.refreshList}>Show List</button>  <span style={{color:'red'}}>Last 500-Bills Detail</span> */}
         {/* <table className='browser-default'><thead><tr style={{backgroundColor:'lightyellow'}}><th>R#</th><th>Date</th><th>Name</th><th>Age</th><th>Contact</th></tr></thead><tbody>{this.state.customerReports.sort((a, b) => (a.reportNumber < b.reportNumber) ? 1 : -1).map((it,ind)=>{return <tr key={ind}><td>{it.reportNumber}</td><td>{it.date}</td><td>{it.patientName}</td><td>{it.age}</td><td>{it.patientReport.map((item,index)=>{return <span key={index}>{item.testNam} , </span>})}</td></tr>}).slice(0,500)}</tbody></table> */}
         {/* <table className='browser-default'><thead><tr style={{backgroundColor:'lightyellow'}}><th>R#</th><th>Date</th><th>Name</th><th>Age</th><th>Contact</th></tr></thead><tbody>{this.state.customerReports.sort((a, b) => (a.reportNumber < b.reportNumber) ? 1 : -1).map((it,ind)=>{return <tr key={ind}><td>{it.reportNumber}</td><td>{it.date}</td><td>{it.patientName}</td><td>{it.age}</td><td>{it.contact}</td><td><a href='#' className="material-icons" style={{color:'red',fontSize:'15px'}} onClick={()=> this.deleteReport(it.key)}>delete</a></td></tr>}).slice(0,500)}</tbody></table> */}
-        <span style={{color:'red'}}>Last 500-Bills Detail</span>
-        <table className='browser-default'><thead><tr style={{backgroundColor:'lightyellow'}}><th>Bill#</th><th>Date</th><th>Customer</th><th>Amount</th><th>Delete</th></tr></thead><tbody>{this.state.billsArray.sort((a, b) => (a.billNumber < b.billNumber) ? 1 : -1).map((it,ind)=>{return <tr key={ind}><td>{it.billNumber}</td><td>{it.date}</td><td>{it.billTo}</td><td>{it.grandTotal.reduce( (total,num)=>{return total+num},0)}</td><td><a href='#' className="material-icons" style={{color:'red',fontSize:'15px'}} onClick={()=> this.deleteBill(it.key)}>delete</a></td></tr>}).slice(0,500)}</tbody></table>
+        <span style={{color:'red'}}>Last 5000-Bills Detail</span>
+        <table className='browser-default'><thead><tr style={{backgroundColor:'lightyellow'}}><th>Bill#</th><th>Date</th><th>Customer</th><th>Amount</th><th>Status</th><th>Rcvd</th><th>Delete</th></tr></thead><tbody>{this.state.billsArray.sort((a, b) => (a.billNumber < b.billNumber) ? 1 : -1).map((it,ind)=>{return <tr key={ind}><td>{it.billNumber}</td><td>{it.date}</td><td>{it.billTo}</td><td>{it.grandTotal.reduce( (total,num)=>{return total+num},0)}</td><td className={it.saleStatus==='Cash'? 'CashStatus' : 'creditStatus'}>{it.saleStatus}</td><td><button className={it.creditRcvd===1?'creditButton':''} onClick={()=>{this.creditRcvd(ind)}}>{it.creditRcvd===0?'X':'OK'}</button></td><td><a href='#' className="material-icons" style={{color:'black',fontSize:'15px'}} onClick={()=> this.deleteBill(it.key)}>delete</a></td></tr>}).slice(0,5000)}</tbody></table>
         </div>
 
           <div className={this.state.loadCustomerList===false?'container' : 'display'}>

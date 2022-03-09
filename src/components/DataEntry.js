@@ -18,6 +18,7 @@ import {Link, Route, BrowserRouter} from 'react-router-dom'
               itemName:'',
               qty:'',
               rate:'',
+              advPayment:'',
               itemObject:[],
               grandTotalObject:[],
               entrySaved:'',
@@ -109,13 +110,32 @@ generateBill = ()=>{
   }else{
 
 
+//  var saleStatus = document.getElementsByName('status').checked   
+if(document.getElementById('saleStatus2').checked){
+  var saleStatus = 'Credit'
+}else{
+  var saleStatus = 'Cash'
+}
+
+
+
+if(this.state.advPayment===''){
+  var advPayment = 0
+}else{
+  var advPayment = this.state.advPayment
+}
+
+
+
 
 var billObj = {};
  billObj.date = this.state.date;
  billObj.billTo= this.state.billTo;
  billObj.itemArray = this.state.itemObject;
  billObj.grandTotal = this.state.grandTotalObject;
-
+ billObj.advPayment= advPayment;
+ billObj.saleStatus = saleStatus;
+ billObj.creditRcvd = 0;
 
 var billNumber = this.state.billNumber+1;
 billObj.billNumber = billNumber;
@@ -133,7 +153,7 @@ billObj.billNumber = billNumber;
 this.setState({entrySaved: 'Entry Saved'})
 
 
-this.setState({date:'', billTo:'', itemObject:[], grandTotalObject:[]})
+this.setState({date:'', billTo:'', itemObject:[], grandTotalObject:[], advPayment:''})
 firebase.database().ref('billNumber').child('billNumber').set(billNumber)
 
 this.setState({itemTableView:false})
@@ -174,12 +194,29 @@ setTimeout(()=>{
           
           <div className='container'>
           <h5 style={{color:'blue'}}>Bill Data Entry</h5> <br/>
-          <input type='text' name='date' value={this.state.date} onChange={this.changeHandler} maxLength='11' placeholder='Date'/> <br/> 
-          <input type='text' name='billTo' value={this.state.billTo} onChange={this.changeHandler} placeholder='Bill To'/> 
-           
+          <label style={{color:'black',fontSize:'16px'}}>Date: </label><input type='text' name='date' value={this.state.date} onChange={this.changeHandler} maxLength='11' placeholder='Date'/> <br/> 
+          <label style={{color:'black',fontSize:'16px'}}>Customer: </label><input type='text' name='billTo' value={this.state.billTo} onChange={this.changeHandler} placeholder='Bill To'/> 
+           <br/><br/>
+           <label style={{color:'black',fontSize:'16px'}}>Advance</label><input id='adv_input' name='advPayment' value={this.state.advPayment} onChange={this.changeHandler} className='browser-default listedInput' type='Number' placeholder='Advance Received (Rs.)'/> 
+            
+
+<br/><br/>
+            <div style={{width:'20%', textAlign:'center',marginLeft:'100px'}}>
+      <label>
+        <input id='saleStatus' name="status" value='Cash' type="radio" />
+        <span style={{color:'black'}}>Cash</span>
+      </label>
+    <br/>
+    
+      <label>
+        <input id='saleStatus2' name="status" value='Credit' type="radio" />
+        <span style={{color:'black'}}>Credit</span>
+      </label>
+    </div>
 
 
-          <br/><br/>
+    <br/><br/>
+          <span style={{fontSize:'16px'}}>Item Description:</span><br/>
           <input id='item_input' name='itemName' value={this.state.itemName} onChange={this.changeHandler} className='browser-default listedInput' type='text' placeholder='Item Name'/> 
           <input id='qty_input' name='qty' value={this.state.qty} onChange={this.changeHandler} className='browser-default listedInput' type='Number' placeholder='Qty'/> 
           <input id='rate_input' name='rate' value={this.state.rate} onChange={this.changeHandler} className='browser-default listedInput' type='Number' placeholder='Rate'/> 
