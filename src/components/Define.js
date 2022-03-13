@@ -92,9 +92,11 @@ firebase.database().ref('loadingDefaultValue').set({defaultValue:this.state.load
 <button style={{padding:'3px',fontSize:'14px',borderRadius:'4px', color:'blue', backgroundColor:'lightgreen'}} onClick={this.saveEmail}> Save </button> <br/> */}
 
 
-<span>Loading Default Value</span><br/>
+
+
+{/* <span>Loading Default Value</span><br/>
 <input type='Number' name='loadingDefaultValue' value={this.state.loadingDefaultValue} placeholder='Loading default value' onChange={this.changeHandler}/>
-<button onClick={this.saveLoadingDefaultValue}>Save</button>
+<button onClick={this.saveLoadingDefaultValue}>Save</button> */}
 
 </div>
 </div>

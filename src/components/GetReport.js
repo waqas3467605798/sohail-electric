@@ -210,6 +210,10 @@ if(reqObj){
               user:null,
               userEmail:null,
               billsArray:[],
+              allSales:true,
+              creditSales:false,
+              paymentSummaryDiv:false,
+              ObjectForPaymentSummary:{grandTotal:[],furtherPayment:[{date:'',payment:0}],furtherPaymentArray:[]},
               pageRefresh:0
               // loadCustomerList:false,
               // refreshList:false,
@@ -283,10 +287,36 @@ if(reqObj){
 
 
   creditRcvd=(i)=>{
-  var reqObj = this.state.billsArray[i]
-  reqObj.creditRcvd= 1;
+    
+var date = prompt('Enter Payment Date');
+var payment = +prompt('Enter Amount Received');
+var reqObj = this.state.billsArray[i]
+
+if('furtherPayment' in reqObj){
+  reqObj.furtherPayment.push({date:date, payment:payment})
+  reqObj.furtherPaymentArray.push(payment)
+}else{
+  var furtherPayment = []
+  var furtherPaymentArray = []
+  furtherPayment.push({date:date, payment:payment})
+  furtherPaymentArray.push(payment)
+  reqObj.furtherPayment = furtherPayment
+  reqObj.furtherPaymentArray = furtherPaymentArray
+}
+
+
+
+  
   firebase.database().ref('bills').child(reqObj.key).set(reqObj)
   this.state.billsArray.splice(i,1,reqObj)
+
+
+
+
+  // var reqObj = this.state.billsArray[i]
+  // reqObj.creditRcvd= 1;
+  // firebase.database().ref('bills').child(reqObj.key).set(reqObj)
+  // this.state.billsArray.splice(i,1,reqObj)
     
   }
 
@@ -316,6 +346,58 @@ else{
 }
 
 
+allSales = ()=>{
+  this.setState({allSales:true, creditSales:false})
+}
+
+
+
+creditSales=()=>{
+  this.setState({allSales:false, creditSales:true})
+}
+
+
+// ObjectForPaymentSummary:{grandTotal:[],furtherPayment:[{date:'',payment:0}],furtherPaymentArray:[]},
+
+paymentSummary=(i)=>{
+
+  this.setState({paymentSummaryDiv:true})
+  var reqObj = this.state.billsArray[i]
+
+
+
+if('furtherPayment' in reqObj){
+
+}else{
+  var furtherPayment=[{date:'',payment:0}]
+  reqObj.furtherPayment =furtherPayment
+}
+
+
+if('furtherPaymentArray' in reqObj){
+
+}else{
+  var furtherPaymentArray=[0]
+  reqObj.furtherPaymentArray =furtherPaymentArray
+}
+
+
+
+this.setState({ObjectForPaymentSummary:reqObj})
+
+
+setTimeout(()=>{
+  this.setState({paymentSummaryDiv:true})
+},2000)
+
+}
+
+
+
+goBack=()=>{
+  this.setState({paymentSummaryDiv:false})
+}
+
     render(){
 
         return(
@@ -324,13 +406,51 @@ else{
 <br/><br/><br/>
 {/* {this.state.pageRefresh} */}
           {/* Div of List of all customer Reports */}
+          {/* <div className='container'>
+          <button style={{backgroundColor:'lightgreen', fontSize:'13px', borderRadius:'4px'}} onClick={this.allSales}>All sales</button><button style={{marginLeft:'30px', backgroundColor:'lightgreen', fontSize:'13px',borderRadius:'4px'}} onClick={this.creditSales}>Credit sales</button><br/><br/>
+          </div> */}
+
+
+
+          <div className={this.state.paymentSummaryDiv===false?'':'display'}>
           <div className='container'>
-          {/* <button style={{padding:'3px',fontSize:'14px',borderRadius:'4px', color:'blue', backgroundColor:'lightgreen'}} onClick={this.refreshList}>Show List</button>  <span style={{color:'red'}}>Last 500-Bills Detail</span> */}
-        {/* <table className='browser-default'><thead><tr style={{backgroundColor:'lightyellow'}}><th>R#</th><th>Date</th><th>Name</th><th>Age</th><th>Contact</th></tr></thead><tbody>{this.state.customerReports.sort((a, b) => (a.reportNumber < b.reportNumber) ? 1 : -1).map((it,ind)=>{return <tr key={ind}><td>{it.reportNumber}</td><td>{it.date}</td><td>{it.patientName}</td><td>{it.age}</td><td>{it.patientReport.map((item,index)=>{return <span key={index}>{item.testNam} , </span>})}</td></tr>}).slice(0,500)}</tbody></table> */}
-        {/* <table className='browser-default'><thead><tr style={{backgroundColor:'lightyellow'}}><th>R#</th><th>Date</th><th>Name</th><th>Age</th><th>Contact</th></tr></thead><tbody>{this.state.customerReports.sort((a, b) => (a.reportNumber < b.reportNumber) ? 1 : -1).map((it,ind)=>{return <tr key={ind}><td>{it.reportNumber}</td><td>{it.date}</td><td>{it.patientName}</td><td>{it.age}</td><td>{it.contact}</td><td><a href='#' className="material-icons" style={{color:'red',fontSize:'15px'}} onClick={()=> this.deleteReport(it.key)}>delete</a></td></tr>}).slice(0,500)}</tbody></table> */}
+          <button style={{backgroundColor:'lightgreen', fontSize:'13px', borderRadius:'4px'}} onClick={this.allSales}>All sales</button><button style={{marginLeft:'30px', backgroundColor:'lightgreen', fontSize:'13px',borderRadius:'4px'}} onClick={this.creditSales}>Credit sales</button><br/><br/>
+          </div>
+          {/* Div of All sales list */}
+        <div className={this.state.allSales===true?'container':'display'}> 
         <span style={{color:'red'}}>Last 5000-Bills Detail</span>
-        <table className='browser-default'><thead><tr style={{backgroundColor:'lightyellow'}}><th>Bill#</th><th>Date</th><th>Customer</th><th>Amount</th><th>Status</th><th>Rcvd</th><th>Delete</th></tr></thead><tbody>{this.state.billsArray.sort((a, b) => (a.billNumber < b.billNumber) ? 1 : -1).map((it,ind)=>{return <tr key={ind}><td>{it.billNumber}</td><td>{it.date}</td><td>{it.billTo}</td><td>{it.grandTotal.reduce( (total,num)=>{return total+num},0)}</td><td className={it.saleStatus==='Cash'? 'CashStatus' : 'creditStatus'}>{it.saleStatus}</td><td><span className={it.saleStatus==='Cash'?'display':''}><button className={it.creditRcvd===1?'creditButton':''} onClick={()=>{this.creditRcvd(ind)}}>{it.creditRcvd===0?'X':'OK'}</button></span></td><td><a href='#' className="material-icons" style={{color:'black',fontSize:'15px'}} onClick={()=> this.deleteBill(it.key)}>delete</a></td></tr>}).slice(0,5000)}</tbody></table>
+        {/* <table className='browser-default'><thead><tr style={{backgroundColor:'lightyellow'}}><th>Bill#</th><th>Date</th><th>Customer</th><th>Amount</th><th>Status</th><th>Rcvd</th><th>Delete</th></tr></thead><tbody>{this.state.billsArray.sort((a, b) => (a.billNumber < b.billNumber) ? 1 : -1).map((it,ind)=>{return <tr key={ind}><td>{it.billNumber}</td><td>{it.date}</td><td>{it.billTo}</td><td>{it.grandTotal.reduce( (total,num)=>{return total+num},0)}</td><td className={it.saleStatus==='Cash'? 'CashStatus' : 'creditStatus'}>{it.saleStatus}</td><td><span className={it.saleStatus==='Cash'?'display':''}><button className={it.creditRcvd===1?'creditButton':''} onClick={()=>{this.creditRcvd(ind)}}>{it.creditRcvd===0?'X':'OK'}</button></span></td><td><a href='#' className="material-icons" style={{color:'black',fontSize:'15px'}} onClick={()=> this.deleteBill(it.key)}>delete</a></td></tr>}).slice(0,5000)}</tbody></table> */}
+        {/* <table className='browser-default'><thead><tr style={{backgroundColor:'lightyellow'}}><th>Bill#</th><th>Date</th><th>Customer</th><th>Amount</th><th>Status</th><th>Rcvd</th><th>Delete</th></tr></thead><tbody>{this.state.billsArray.sort((a, b) => (a.billNumber < b.billNumber) ? 1 : -1).map((it,ind)=>{return <tr key={ind}><td>{it.billNumber}</td><td>{it.date}</td><td>{it.billTo}</td><td>{it.grandTotal.reduce( (total,num)=>{return total+num},0)}</td><td className={it.saleStatus==='Cash'? 'CashStatus' : 'creditStatus'}>{it.saleStatus}</td><td><span className={it.saleStatus==='Cash'?'display':''}><button className={it.creditRcvd===1?'creditButton':''} onClick={()=>{this.creditRcvd(ind)}}>{it.creditRcvd===0?'X':'OK'}</button></span></td><td><a href='#' className="material-icons" style={{color:'black',fontSize:'15px'}} onClick={()=> this.deleteBill(it.key)}>delete</a></td></tr>}).slice(0,5000)}</tbody></table> */}
+        <table className='browser-default'><thead><tr style={{backgroundColor:'lightyellow'}}><th>Bill#</th><th>Date</th><th>Customer</th><th>B.Amnt</th><th>BAL</th><th>Status</th><th>Rcvd</th><th>Delete</th></tr></thead><tbody>{this.state.billsArray.sort((a, b) => (a.billNumber < b.billNumber) ? 1 : -1).map((it,ind)=>{return <tr key={ind}><td>{it.billNumber}</td><td>{it.date}</td><td> <a href='#' onClick={()=> this.paymentSummary(ind)}> {it.billTo}</a></td><td>{it.grandTotal.reduce( (total,num)=>{return total+num},0)}</td><td>{it.grandTotal.reduce( (total,num)=>{return total+num},0) - it.advPayment - (it.furtherPaymentArray?   it.furtherPaymentArray.reduce( (total,num)=>{return total+num},0) : 0   )}</td><td className={it.saleStatus==='Cash'? 'CashStatus' : 'creditStatus'}>{it.saleStatus}</td><td><span className={it.saleStatus==='Cash'?'display':''}><button  onClick={()=>{this.creditRcvd(ind)}} className="material-icons">edit</button></span></td><td><a href='#' className="material-icons" style={{color:'black',fontSize:'15px'}} onClick={()=> this.deleteBill(it.key)}>delete</a></td></tr>}).slice(0,5000)}</tbody></table>
+        {/* <table className='browser-default'><thead><tr style={{backgroundColor:'lightyellow'}}><th>Bill#</th><th>Date</th><th>Customer</th><th>Amount</th><th>Status</th><th>Rcvd</th><th>Delete</th></tr></thead><tbody>{this.state.billsArray.sort((a, b) => (a.billNumber < b.billNumber) ? 1 : -1).map((it,ind)=>{return <tr key={ind}><td>{it.billNumber}</td><td>{it.date}</td><td>{it.billTo}</td><td>{it.grandTotal.reduce( (total,num)=>{return total+num},0)}</td><td className={it.saleStatus==='Cash'? 'CashStatus' : 'creditStatus'}>{it.saleStatus}</td><td><span><button  onClick={()=>{this.creditRcvd(ind)}} className="material-icons">edit</button></span></td><td><a href='#' className="material-icons" style={{color:'black',fontSize:'15px'}} onClick={()=> this.deleteBill(it.key)}>delete</a></td></tr>}).slice(0,5000)}</tbody></table> */}
         </div>
+
+
+
+          {/* Div of Credit sales list */}
+        <div className={this.state.allSales===true?'display':'container'}> 
+        <span style={{color:'red'}}>Last 5000-Bills Detail</span>
+        {/* <table className='browser-default'><thead><tr style={{backgroundColor:'lightyellow'}}><th>Bill#</th><th>Date</th><th>Customer</th><th>Amount</th><th>Status</th><th>Rcvd</th><th>Delete</th></tr></thead><tbody>{this.state.billsArray.sort((a, b) => (a.billNumber < b.billNumber) ? 1 : -1).map((it,ind)=>{return <tr className={it.saleStatus==='Credit'?'':'display'} key={ind}><td>{it.billNumber}</td><td>{it.date}</td><td>{it.billTo}</td><td>{it.grandTotal.reduce( (total,num)=>{return total+num},0)}</td><td className={it.saleStatus==='Cash'? 'CashStatus' : 'creditStatus'}>{it.saleStatus}</td><td><span className={it.saleStatus==='Cash'?'display':''}><button className={it.creditRcvd===1?'creditButton':''}  onClick={()=>{this.creditRcvd(ind)}}>{it.creditRcvd===0?'X':'OK'}</button></span></td><td><a href='#' className="material-icons" style={{color:'black',fontSize:'15px'}} onClick={()=> this.deleteBill(it.key)}>delete</a></td></tr>}).slice(0,5000)}</tbody></table> */}
+        <table className='browser-default'><thead><tr style={{backgroundColor:'lightyellow'}}><th>Bill#</th><th>Date</th><th>Customer</th><th>B.Amnt</th><th>BAL</th><th>Status</th><th>Rcvd</th><th>Delete</th></tr></thead><tbody>{this.state.billsArray.sort((a, b) => (a.billNumber < b.billNumber) ? 1 : -1).map((it,ind)=>{return <tr className={it.saleStatus==='Credit'?'':'display'} key={ind}><td>{it.billNumber}</td><td>{it.date}</td><td><a href='#' onClick={()=> this.paymentSummary(ind)}>{it.billTo}</a></td><td>{it.grandTotal.reduce( (total,num)=>{return total+num},0)}</td><td>{it.grandTotal.reduce( (total,num)=>{return total+num},0) - it.advPayment - (it.furtherPaymentArray?   it.furtherPaymentArray.reduce( (total,num)=>{return total+num},0) : 0   )}</td><td className={it.saleStatus==='Cash'? 'CashStatus' : 'creditStatus'}>{it.saleStatus}</td><td><span><button  onClick={()=>{this.creditRcvd(ind)}} className="material-icons">edit</button></span></td><td><a href='#' className="material-icons" style={{color:'black',fontSize:'15px'}} onClick={()=> this.deleteBill(it.key)}>delete</a></td></tr>}).slice(0,5000)}</tbody></table>
+        </div>
+
+        </div>
+
+
+
+
+          {/* div of payment summary */}
+          <div className={this.state.paymentSummaryDiv===false?'display':'container'}>
+          <span style={{fontSize:'20px',color:'blue'}}><b>payment Summary:</b></span>
+          <p><b>Total Bill amount: <span style={{color:'green'}}>-Rs. {this.state.ObjectForPaymentSummary.grandTotal.reduce( (total,num)=>{return total+num},0)}</span></b></p>
+          <p>Advance Received: <span style={{color:'red'}}>-Rs. {this.state.ObjectForPaymentSummary.advPayment}</span></p>
+          <p> {this.state.ObjectForPaymentSummary.furtherPayment.map((it,ind)=>{return <span key={ind}> Received {it.date} <span style={{color:'red'}}>-Rs. {it.payment}</span><br/></span>})}</p>
+          <p><b>Balance: <span style={{color:'green'}}>Rs. {this.state.ObjectForPaymentSummary.grandTotal.reduce( (total,num)=>{return total+num},0)  -   this.state.ObjectForPaymentSummary.advPayment     -    (this.state.ObjectForPaymentSummary.furtherPaymentArray?   this.state.ObjectForPaymentSummary.furtherPaymentArray.reduce( (total,num)=>{return total+num},0) : 0   )  }</span></b></p>
+          
+          <br/>
+          <button style={{backgroundColor:'lightgreen'}} onClick={this.goBack}> Go Back</button>
+          </div>
+
 
           {/* <div className={this.state.loadCustomerList===false?'container' : 'display'}>
           <span style={{fontSize:'20px', color:'red'}}>loading ..... <br/> Please Wait</span>

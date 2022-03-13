@@ -15,6 +15,7 @@ import 'firebase/storage'
 //   measurementId: "G-N0E6ZPE8Z6"
 // };
 
+
 const firebaseConfig = {
   apiKey: "AIzaSyCri9N8uwpTpBFmr5RGITpH1tUrlLjMKBk",
   authDomain: "myledgers-5c8bc.firebaseapp.com",

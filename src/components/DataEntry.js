@@ -178,7 +178,7 @@ billObj.billNumber = billNumber;
 this.setState({entrySaved: 'Entry Saved'})
 
 
-this.setState({date:'', billTo:'', itemObject:[], grandTotalObject:[], advPayment:''})
+this.setState({date:'', billTo:'', itemObject:[], grandTotalObject:[], advPayment:'',billNumber:billNumber})
 firebase.database().ref('billNumber').child('billNumber').set(billNumber)
 
 this.setState({itemTableView:false})
@@ -220,7 +220,7 @@ setTimeout(()=>{
           <div className={this.state.loadingFromFirebase===0?'display':'container'}>
           <h5 style={{color:'blue'}}>Bill Data Entry</h5> <br/>
           <label style={{color:'black',fontSize:'16px'}}>Date: </label><input type='text' name='date' value={this.state.date} onChange={this.changeHandler} maxLength='11' placeholder='Date'/> <br/> 
-          <label style={{color:'black',fontSize:'16px'}}>Customer: </label><input type='text' name='billTo' value={this.state.billTo} onChange={this.changeHandler} placeholder='Bill To'/> 
+          <label style={{color:'black',fontSize:'16px'}}>Customer: </label><input type='text' name='billTo' value={this.state.billTo} onChange={this.changeHandler} placeholder='Customer Name'/> 
            <br/><br/>
            <label style={{color:'black',fontSize:'16px'}}>Advance</label><input id='adv_input' name='advPayment' value={this.state.advPayment} onChange={this.changeHandler} className='browser-default listedInput' type='Number' placeholder='Advance Received (Rs.)'/> 
             
@@ -267,7 +267,7 @@ setTimeout(()=>{
 
 
 <div className={this.state.loadingFromFirebase===0?'container':'display'}>
-  Loading
+  <span style={{color:'green',fontSize:'25px'}}>Loading.....</span>
 </div>
 
 
