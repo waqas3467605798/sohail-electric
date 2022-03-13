@@ -96,7 +96,7 @@ input:focus{
 
 input{
     height: 23px !important;
-    width: 35% !important;
+    width: 50% !important;
 }
 
 #item_input{
@@ -116,7 +116,7 @@ input{
 
 #adv_input{
     height: 23px;
-    width: 30% !important;
+    width: 50% !important;
 }
 
 

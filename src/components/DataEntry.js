@@ -217,7 +217,7 @@ setTimeout(()=>{
           <div>
           <br/><br/>
           <div className={navigator.onLine===true ? '' : 'display'}>
-          <div className={this.state.loadingFromFirebase===0?'display':'container'}>
+          <div className={this.state.loadingFromFirebase===0?'display':''}>
           <h5 style={{color:'blue'}}>Bill Data Entry</h5> <br/>
           <label style={{color:'black',fontSize:'16px'}}>Date: </label><input type='text' name='date' value={this.state.date} onChange={this.changeHandler} maxLength='11' placeholder='Date'/> <br/> 
           <label style={{color:'black',fontSize:'16px'}}>Customer: </label><input type='text' name='billTo' value={this.state.billTo} onChange={this.changeHandler} placeholder='Customer Name'/> 
@@ -240,7 +240,8 @@ setTimeout(()=>{
     </div>
 
 
-    <br/><br/>
+    <br/>
+    <div className='container'>
           <span style={{fontSize:'16px'}}>Item Description:</span><br/>
           <input id='item_input' name='itemName' value={this.state.itemName} onChange={this.changeHandler} className='browser-default listedInput' type='text' placeholder='Item Name'/> 
           <input id='qty_input' name='qty' value={this.state.qty} onChange={this.changeHandler} className='browser-default listedInput' type='Number' placeholder='Qty'/> 
@@ -257,6 +258,7 @@ setTimeout(()=>{
           <br/><br/>
           <button style={{padding:'3px',fontSize:'14px',borderRadius:'4px', color:'blue', backgroundColor:'lightgreen'}} onClick={this.generateBill}> Generate Bill </button> <br/>
           <span style={{fontSize:'20px', color:this.state.color}}><b>{this.state.entrySaved}</b></span>
+   </div>
 <br/><br/>
           
           
